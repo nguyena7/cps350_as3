@@ -1,6 +1,7 @@
 package application;
 
 import java.util.Comparator;
+import java.lang.String;
 
 /*
  * CPS 350: Assignment 3
@@ -11,43 +12,93 @@ import java.util.Comparator;
  * The purpose of this assignment is to implement sorting algorithms
  * for the autocomplete application
  */
-public class Term implements Comparable<Term> {
-	String query;
-	long weight;
-	
-	/* Initializes a term with the given query string and weight. */
-	 public Term(String query, long weight)
-	 {
-		 if (query.equals(null)) { throw new NullPointerException("ERROR: query equals null... ");}
-		 if (weight<0) 			 { throw new IllegalArgumentException("ERROR: weight is negative... ");} 
-		 this.query=query; this.weight=weight;
-	 }
-	 /* Compares the two terms in descending order by weight. */
-	 public static Comparator<Term> byReverseWeightOrder()
-	 {
-		 return new ReverseWeightOrder();
-	 }
-	 private static class ReverseWeightOrder implements Comparator<Term> {
-	  public int compare(Term a, Term b) {
-		  return (int) (a.weight - b.weight);
-	  }
-	 }
-	 /* Compares the two terms in lexicographic order but using only the first
-	r characters of each query. */
-	 public static Comparator<Term> byPrefixOrder(int r)
-	 {
-		if (r<0) { throw new IllegalArgumentException("ERROR: r value in byPrefixOrder() is negative... ");}
+public class Term implements Comparable <Term>{
+
+	private long weight;
+	private String query;
+
+	public Term(String query, long weight) {	
+		if(query.equals(null)) throw new NullPointerException(); 
+		if(weight < 0) throw new IllegalArgumentException();
 		
-	 }
-	 /* Compares the two terms in lexicographic order by query. */
-	 public int compareTo(Term that) {
-		 return Integer.parseInt(this.query)-Integer.parseInt(that.query);
-	 }
+		this.query = query;
+		this.weight = weight;
+	}
+
+	public static Comparator<Term> byReverseWeightOrder(){
+		return new ReverseWeightOrder();
+	}
+
+	private static class ReverseWeightOrder implements Comparator<Term>{
+		@Override
+		public int compare(Term a, Term b) {
+			// TODO Auto-generated method stub
+			return (int)(a.weight - b.weight); // return + if a > b, - if a < b, 0 if a = b 
+		}
+	}
 	
+	public static Comparator<Term> byPrefixOrder(int r){
+		if(r < 0) throw new IllegalArgumentException();
+		
+		return new byPrefixOrder(r);
+	}
 	
-	 // Returns a string representation of this term in the following format:
-	 // weight (i.e., ??.toString()), followed by a tab, followed by query.
-	 public String toString() {
-		 
-	 }
+	private static class byPrefixOrder implements Comparator<Term>{
+
+		private int r;
+
+		public byPrefixOrder(int r) {
+			// TODO Auto-generated constructor stub
+			this.r = r;
+		}
+
+		@Override
+		public int compare(Term a, Term b) {
+			// TODO Auto-generated method stub
+			int lengthTerm1 = a.query.length();
+			int lengthTerm2 = b.query.length();
+			String word1, word2;
+			
+			//if both terms are greater length than r
+			if(lengthTerm1 >= r && lengthTerm2 >= r) {
+				word1 = a.query.toLowerCase().substring(0, r);
+				word2 = b.query.toLowerCase().substring(0, r);
+				
+				return word1.compareTo(word2);
+			}
+			
+			//if one term length is bigger than r
+			else if(lengthTerm1 >= r&& lengthTerm2 < r) {
+				word1 = a.query.toLowerCase().substring(0,r);
+				word2 = b.query.toLowerCase();
+				
+				return word1.compareTo(word2);		
+			}
+			
+			//if the other term length is bigger than r
+			else if(lengthTerm1 < r && lengthTerm2 >= r) {
+				word1 = a.query.toLowerCase();
+				word2 = b.query.toLowerCase().substring(0, r);
+				
+				return word1.compareTo(word2);
+			}
+			//if both terms's lengths are less than r
+			else {
+				word1 = a.query.toLowerCase();
+				word2 = b.query.toLowerCase();
+
+				return word1.compareTo(word2);
+			}			
+		}
+	}
+
+		public String toString() {		
+			return weight + "/t" + query;
+		}
+
+	@Override
+	public int compareTo(Term that) {
+		// TODO Auto-generated method stub
+		return this.query.compareTo(that.query);
+	}
 }
