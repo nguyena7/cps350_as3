@@ -1,0 +1,82 @@
+package application;
+
+import java.util.Comparator;
+
+/*
+ * CPS 350: Assignment 3
+ * 10/19/18
+ * @author Matthew Hildebrandt
+ * @author Antall Nguyen
+ * 
+ * The purpose of this assignment is to implement sorting algorithms
+ * for the autocomplete application
+ */
+public class BinarySearchDeluxe {
+
+	/*
+	 * Returns the index of the first key in a[] that equals the search key, or -1
+	 * if no such key.
+	 */
+    public static <Key> int firstIndexOf(Key[] a, Key key, Comparator<Key> comparator) {
+        //throws null pointer exception if there is no key or comparator
+        if (a == null || key == null || comparator == null) {
+            throw new java.lang.NullPointerException();
+        }
+
+        if (a.length == 0) {
+            return -1;
+        }
+
+        int low = 0;
+        int high = a.length - 1;
+
+        while (low + 1 < high) {
+            int mid = low + (high - low) / 2;
+            if (comparator.compare(key, a[mid]) <= 0) {
+                high = mid;
+            } else {
+                low = mid;
+            }
+        }
+
+        if (comparator.compare(key, a[low]) == 0) {
+            return low;
+        } else if (comparator.compare(key, a[high]) == 0) {
+            return high;
+        } else {
+            return -1;
+        }
+    }
+
+    /* Returns the index of the last key in a[] that equals the search key, or -1 if no such key. */
+    public static <Key> int lastIndexOf(Key[] a, Key key, Comparator<Key> comparator) {
+        //throws null pointer exception if there is no key or comparator
+        if (a == null || key == null || comparator == null) {
+            throw new java.lang.NullPointerException();
+        }
+
+        if (a == null || a.length == 0) {
+            return -1;
+        }
+
+        int low = 0;
+        int high = a.length - 1;
+
+        while (low + 1 < high) {
+            int mid = low + (high - low) / 2;
+            if (comparator.compare(key, a[mid]) < 0) {
+                high = mid;
+            } else {
+                low = mid;
+            }
+        }
+
+        if (comparator.compare(key, a[high]) == 0) {
+            return high;
+        } else if (comparator.compare(key, a[low]) == 0) {
+            return low;
+        } else {
+            return -1;
+        }
+    }
+}
