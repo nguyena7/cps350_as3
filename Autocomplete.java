@@ -24,7 +24,6 @@ public class Autocomplete { // implement sorting algorithm in this class
 		this.queries = terms;
 		
 		sort(queries);
-		}
 	}
 
 	/*
