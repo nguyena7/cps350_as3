@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 /*
  * CPS 350: Assignment 3
- * 10/9/18
+ * 10/19/18
  * @author Matthew Hildebrandt
  * @author Antall Nguyen
  * 
@@ -12,35 +12,71 @@ import java.util.Comparator;
  * for the autocomplete application
  */
 public class BinarySearchDeluxe {
-	
-	/* Returns the index of the first key in a[] that equals the search key,
-	or -1 if no such key. */
-	 public static <Key> int firstIndexOf(Key[] a, Key key, Comparator<Key>
-	comparator) throws java.lang.NullPointerException
-	 {
-		 if ( a.equals(null) || key.equals(null) || comparator.equals(null) )
-		 	{throw new java.lang.NullPointerException("ERROR: invalid parameters in firstIndexOf()...");}
-		 
-		 // implementation here...
-		 int result=-1;
-		 for (int i=0;i<a.length;i++) { // HOWTO: use comparator***
-			 if (comparator.compare(a[i], key)==0) {return i;}
-		 }
-		 return result;
-	 }
-	 
-	 /* Returns the index of the last key in a[] that equals the search key,
-	or -1 if no such key. */
-	 public static <Key> int lastIndexOf(Key[] a, Key key, Comparator<Key>
-	comparator) throws java.lang.NullPointerException
-	 {
-		 if ( a.equals(null) || key.equals(null) || comparator.equals(null) )
-		 	{throw new java.lang.NullPointerException("ERROR: invalid parameters in lastIndexOf()...");}
-	 	// implementation here...
-		int result=-1;
-	 	for (int i=0; i<a.length;i++) {
-	 		if (comparator.compare(a[i], key)==0) {result=i;}
-	 	}
-		return result; 	
-	 }
+
+	/*
+	 * Returns the index of the first key in a[] that equals the search key, or -1
+	 * if no such key.
+	 */
+    public static <Key> int firstIndexOf(Key[] a, Key key, Comparator<Key> comparator) {
+        //throws null pointer exception if there is no key or comparator
+        if (a == null || key == null || comparator == null) {
+            throw new java.lang.NullPointerException();
+        }
+
+        if (a.length == 0) {
+            return -1;
+        }
+
+        int low = 0;
+        int high = a.length - 1;
+
+        while (low + 1 < high) {
+            int mid = low + (high - low) / 2;
+            if (comparator.compare(key, a[mid]) <= 0) {
+                high = mid;
+            } else {
+                low = mid;
+            }
+        }
+
+        if (comparator.compare(key, a[low]) == 0) {
+            return low;
+        } else if (comparator.compare(key, a[high]) == 0) {
+            return high;
+        } else {
+            return -1;
+        }
+    }
+
+    /* Returns the index of the last key in a[] that equals the search key, or -1 if no such key. */
+    public static <Key> int lastIndexOf(Key[] a, Key key, Comparator<Key> comparator) {
+        //throws null pointer exception if there is no key or comparator
+        if (a == null || key == null || comparator == null) {
+            throw new java.lang.NullPointerException();
+        }
+
+        if (a == null || a.length == 0) {
+            return -1;
+        }
+
+        int low = 0;
+        int high = a.length - 1;
+
+        while (low + 1 < high) {
+            int mid = low + (high - low) / 2;
+            if (comparator.compare(key, a[mid]) < 0) {
+                high = mid;
+            } else {
+                low = mid;
+            }
+        }
+
+        if (comparator.compare(key, a[high]) == 0) {
+            return high;
+        } else if (comparator.compare(key, a[low]) == 0) {
+            return low;
+        } else {
+            return -1;
+        }
+    }
 }
