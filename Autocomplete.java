@@ -24,6 +24,7 @@ public class Autocomplete { // implement sorting algorithm in this class
 		this.queries = terms;
 		
 		sort(queries);
+
 	}
 
 	/*
@@ -31,6 +32,7 @@ public class Autocomplete { // implement sorting algorithm in this class
 	 * weight.
 	 */
 	public Term[] allMatches(String prefix) throws NullPointerException {
+
 		// throws null pointer if there are no terms
 		if (prefix == null) {
 			throw new java.lang.NullPointerException();
@@ -106,6 +108,7 @@ public class Autocomplete { // implement sorting algorithm in this class
 
 	@SuppressWarnings("unchecked")
 	private void merge(Comparable[] a, Comparable[] aux, int lo, int mid, int hi, Comparator comp)
+
 	 {
 		 for (int k = lo; k <= hi; k++) {aux[k] = a[k];} // copy to an auxiliary array
 		 int i = lo, j = mid+1;
@@ -115,5 +118,6 @@ public class Autocomplete { // implement sorting algorithm in this class
 			 else if (comp.compare(aux[j], aux[i]) < 0) a[k] = aux[j++];
 			 else 							a[k] = aux[i++];
 		 }
+
 	 }
  }
